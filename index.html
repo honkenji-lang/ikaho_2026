@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>伊香保・みなかみ 旅のしおり 2026（8/8〜8/12）</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        onsen: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        maple: {
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+            border-radius: 0.75rem;
+            z-index: 10;
+        }
+        .custom-popup .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            padding: 4px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .tab-btn.active {
+            background-color: #059669;
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
+        }
+
+        /* --- Dynamic Animations & Effects --- */
+        @keyframes swayAnimation {
+            0%, 100% { transform: rotate(-3deg) translateY(0); }
+            50% { transform: rotate(4deg) translateY(-2px); }
+        }
+        .animate-sway {
+            display: inline-block;
+            animation: swayAnimation 3.5s ease-in-out infinite;
+        }
+
+        @keyframes waveFlow {
+            0% { transform: translateX(0) scaleY(1); }
+            50% { transform: translateX(-2%) scaleY(1.05); }
+            100% { transform: translateX(0) scaleY(1); }
+        }
+        .animate-wave-flow {
+            animation: waveFlow 8s ease-in-out infinite;
+        }
+
+        /* Map Dash Flow Polyline */
+        @keyframes dashFlow {
+            to { stroke-dashoffset: -28px; }
+        }
+        .leaflet-interactive[stroke-dasharray] {
+            animation: dashFlow 1.2s linear infinite;
+        }
+
+        /* Scroll Reveal Transitions */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Tab Fade-In */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- HERO HEADER -->
+    <header class="relative bg-gradient-to-r from-emerald-900 via-onsen-800 to-teal-700 text-white shadow-lg overflow-hidden">
+        <!-- Hero Background Image Overlay with Wave Flow -->
+        <div class="absolute inset-0 z-0 opacity-35 mix-blend-overlay animate-wave-flow">
+            <img src="images/ikaho_hero.png" alt="伊香保温泉石段街と風情ある灯籠" class="w-full h-full object-cover">
+        </div>
+        <div class="relative z-10 max-w-5xl mx-auto px-4 py-6 sm:py-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-2 bg-white/25 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-semibold mb-2.5 border border-white/30 shadow-sm">
+                        <i class="fa-solid fa-hot-tub-person text-amber-300 animate-sway"></i> 温泉・谷川岳・お盆リゾート 2026
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-sm flex items-center gap-3">
+                        <span>伊香保・みなかみ 旅のしおり</span>
+                        <span class="text-2xl sm:text-3xl animate-sway">🍁♨️</span>
+                    </h1>
+                    <p class="text-xs sm:text-sm text-emerald-100 mt-1 flex items-center gap-3 flex-wrap">
+                        <span><i class="fa-regular fa-calendar text-amber-300"></i> 2026年8月8日(土) 〜 8月12日(水) 【4泊5日】</span>
+                        <span><i class="fa-solid fa-hotel text-amber-300"></i> 岸権旅館 (2泊) ➔ みなかみホテルジュラク (2泊)</span>
+                    </p>
+                </div>
+                
+                <!-- Countdown & Access Badges Container -->
+                <div class="flex flex-col sm:flex-row md:flex-col gap-2 shrink-0">
+                    <!-- Live Countdown Badge -->
+                    <div class="bg-gradient-to-r from-amber-500/30 to-rose-500/30 backdrop-blur-md border border-amber-300/40 p-2.5 rounded-xl text-xs flex items-center justify-between gap-3 shadow-md">
+                        <div class="flex items-center gap-1.5 font-semibold text-amber-200">
+                            <i class="fa-solid fa-stopwatch animate-pulse text-amber-300 text-sm"></i>
+                            <span>出発まで:</span>
+                        </div>
+                        <div id="countdown-timer" class="font-extrabold font-mono text-sm tracking-wide text-amber-300">
+                            計算中...
+                        </div>
+                    </div>
+
+                    <!-- Drive Quick Badges -->
+                    <div class="bg-slate-900/40 backdrop-blur-md border border-white/20 p-3 rounded-xl text-xs space-y-1 shrink-0 shadow-md">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-emerald-100 font-semibold"><i class="fa-solid fa-car text-sky-300 mr-1"></i>往路 (関越道):</span>
+                            <span class="font-bold">練馬IC 08:00 ➔ 渋川伊香保 09:45</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-emerald-100 font-semibold"><i class="fa-solid fa-flag-checkered text-rose-300 mr-1"></i>復路 (関越道):</span>
+                            <span class="font-bold">水上IC 14:30 ➔ 練馬IC 17:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-5xl mx-auto px-4 py-6 w-full flex-1 space-y-6">
+
+        <!-- Quick Info Bar -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 reveal-on-scroll">
+            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-route"></i></div>
+                <div>
+                    <div class="text-[10px] text-slate-400 font-bold">主要高速IC</div>
+                    <div class="text-xs font-bold text-slate-700">渋川伊香保IC / 水上IC</div>
+                </div>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-lg"><i class="fa-solid fa-car"></i></div>
+                <div>
+                    <div class="text-[10px] text-slate-400 font-bold">移動手段</div>
+                    <div class="text-xs font-bold text-slate-700">自家用車 (ドライブ)</div>
+                </div>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center text-lg"><i class="fa-solid fa-hot-tub-person"></i></div>
+                <div>
+                    <div class="text-[10px] text-slate-400 font-bold">宿泊拠点</div>
+                    <div class="text-xs font-bold text-slate-700">岸権旅館 ➔ ホテルジュラク</div>
+                </div>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center text-lg"><i class="fa-solid fa-mountain"></i></div>
+                <div>
+                    <div class="text-[10px] text-slate-400 font-bold">ハイライト</div>
+                    <div class="text-xs font-bold text-slate-700">石段街 ＆ 谷川岳ロープウェイ</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weather Forecast Live Card -->
+        <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 rounded-xl p-3.5 text-white shadow-md reveal-on-scroll">
+            <div class="flex items-center gap-2 mb-2.5">
+                <div class="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-amber-300 text-lg shrink-0">
+                    <i class="fa-solid fa-cloud-sun font-bold"></i>
+                </div>
+                <div>
+                    <span class="font-black text-sm sm:text-base">伊香保・みなかみ 旅行当日の天気予報</span>
+                    <p class="text-[11px] text-emerald-100" id="weather-updated">予報を取得中...</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-5 gap-1.5 sm:gap-2">
+                <div id="weather-day-1" class="bg-slate-900/30 backdrop-blur-md border border-white/20 rounded-lg p-1.5 sm:p-2 text-center">
+                    <div class="text-[10px] text-emerald-200 font-bold">8/8(土)</div>
+                    <div class="text-lg my-0.5"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                    <div class="text-[10px] text-emerald-100">取得中</div>
+                </div>
+                <div id="weather-day-2" class="bg-slate-900/30 backdrop-blur-md border border-white/20 rounded-lg p-1.5 sm:p-2 text-center">
+                    <div class="text-[10px] text-emerald-200 font-bold">8/9(日)</div>
+                    <div class="text-lg my-0.5"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                    <div class="text-[10px] text-emerald-100">取得中</div>
+                </div>
+                <div id="weather-day-3" class="bg-slate-900/30 backdrop-blur-md border border-white/20 rounded-lg p-1.5 sm:p-2 text-center">
+                    <div class="text-[10px] text-emerald-200 font-bold">8/10(月)</div>
+                    <div class="text-lg my-0.5"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                    <div class="text-[10px] text-emerald-100">取得中</div>
+                </div>
+                <div id="weather-day-4" class="bg-slate-900/30 backdrop-blur-md border border-white/20 rounded-lg p-1.5 sm:p-2 text-center">
+                    <div class="text-[10px] text-emerald-200 font-bold">8/11(火・祝)</div>
+                    <div class="text-lg my-0.5"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                    <div class="text-[10px] text-emerald-100">取得中</div>
+                </div>
+                <div id="weather-day-5" class="bg-slate-900/30 backdrop-blur-md border border-white/20 rounded-lg p-1.5 sm:p-2 text-center">
+                    <div class="text-[10px] text-emerald-200 font-bold">8/12(水)</div>
+                    <div class="text-lg my-0.5"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                    <div class="text-[10px] text-emerald-100">取得中</div>
+                </div>
+            </div>
+            <div class="mt-2.5 pt-2.5 border-t border-white/20 flex items-center justify-center gap-4 text-[11px]">
+                <div class="flex items-center gap-1.5"><i class="fa-solid fa-temperature-three-quarters text-amber-300"></i> 伊香保標高: <span class="font-bold text-amber-300">約700m (平地より-4℃)</span></div>
+                <div class="flex items-center gap-1.5"><i class="fa-solid fa-mountain text-sky-200"></i> 谷川岳天神平標高: <span class="font-bold text-sky-200">約1,300m (羽織もの推奨)</span></div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex overflow-x-auto bg-slate-200/70 p-1 rounded-xl text-xs sm:text-sm font-medium gap-1 no-scrollbar reveal-on-scroll">
+            <button onclick="switchTab('itinerary')" id="tab-btn-itinerary" class="tab-btn active shrink-0 px-4 py-2 rounded-lg transition-all">
+                <i class="fa-solid fa-calendar-days mr-1.5"></i>タイムスケジュール
+            </button>
+            <button onclick="switchTab('gourmet')" id="tab-btn-gourmet" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all">
+                <i class="fa-solid fa-utensils mr-1.5"></i>グルメ＆絶景スポット
+            </button>
+            <button onclick="switchTab('access')" id="tab-btn-access" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all">
+                <i class="fa-solid fa-car-side mr-1.5"></i>ドライブ＆お盆混雑対策
+            </button>
+            <button onclick="switchTab('checklist')" id="tab-btn-checklist" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all">
+                <i class="fa-solid fa-list-check mr-1.5"></i>持ち物チェック
+            </button>
+        </div>
+
+        <!-- TAB 1: ITINERARY CONTENT -->
+        <section id="tab-itinerary" class="space-y-4">
+            <!-- Resort Accommodation Feature Banners Carousel -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Stay 1: Kishigon Ryokan -->
+                <div class="relative rounded-2xl overflow-hidden shadow-md border border-slate-200 bg-slate-900 group block transition-all">
+                    <img src="images/ikaho_hero.png" alt="伊香保温泉 岸権旅館" class="w-full h-44 object-cover opacity-85 group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent flex flex-col justify-end p-4 text-white">
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                            <div class="inline-flex items-center gap-1.5 bg-amber-500/90 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-xs">
+                                <i class="fa-solid fa-hot-tub-person"></i> 8/8〜8/10 宿泊（2泊）
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <a href="https://www.kishigon.co.jp/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] bg-white/20 hover:bg-white/35 backdrop-blur-md px-2 py-0.5 rounded-full text-white font-bold transition-colors">
+                                    公式HP <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                                <a href="https://www.ikyu.com/00030027/10836945/10228883/branch/?cpb=005&mbln=020,007&midln=10038672,10060453&pbn=0109&rbn=009&rpbn=0003" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] bg-amber-500 hover:bg-amber-400 text-slate-900 backdrop-blur-md px-2 py-0.5 rounded-full font-bold transition-colors shadow-xs">
+                                    詳細 <i class="fa-solid fa-circle-info text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-bold">伊香保温泉 岸権旅館（きしごんりょかん）</h3>
+                        <p class="text-[11px] sm:text-xs text-slate-200 mt-0.5">石段街165段目直結・創業天正年間の老舗宿。「黄金の湯」源泉掛け流し</p>
+                    </div>
+                </div>
+
+                <!-- Stay 2: Minakami Hotel Juraku -->
+                <div class="relative rounded-2xl overflow-hidden shadow-md border border-slate-200 bg-slate-900 group block transition-all">
+                    <img src="images/minakami_nature.png" alt="みなかみホテルジュラク" class="w-full h-44 object-cover opacity-85 group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent flex flex-col justify-end p-4 text-white">
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                            <div class="inline-flex items-center gap-1.5 bg-emerald-600/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-xs">
+                                <i class="fa-solid fa-hotel"></i> 8/10〜8/12 宿泊（2泊）
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <a href="https://www.hotel-juraku.co.jp/minakami/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] bg-white/20 hover:bg-white/35 backdrop-blur-md px-2 py-0.5 rounded-full text-white font-bold transition-colors">
+                                    公式HP <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                                <a href="https://www.ikyu.com/00030790/11603272/10105999/branch/?cpb=001&mbln=013,017&midln=10047452,10047454&pbn=0011&rbn=032&rpbn=0004" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] bg-amber-500 hover:bg-amber-400 text-slate-900 backdrop-blur-md px-2 py-0.5 rounded-full font-bold transition-colors shadow-xs">
+                                    詳細 <i class="fa-solid fa-circle-info text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-bold">みなかみホテルジュラク</h3>
+                        <p class="text-[11px] sm:text-xs text-slate-200 mt-0.5">利根川の渓谷美を望む露天風呂＆大人気ライブキッチンバイキング</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+                <h2 class="font-bold text-slate-800 text-base sm:text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-clock text-emerald-600"></i>
+                    4泊5日 詳細タイムスケジュール
+                </h2>
+                <span class="text-xs bg-rose-100 text-rose-800 font-bold px-2.5 py-1 rounded-full border border-rose-200">
+                    <i class="fa-solid fa-triangle-exclamation mr-1"></i>お盆最盛期モード
+                </span>
+            </div>
+
+            <!-- Accordion Days -->
+            <div class="space-y-3">
+
+                <!-- DAY 1 -->
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="bg-gradient-to-r from-emerald-600 to-teal-700 p-3.5 text-white flex items-center justify-between cursor-pointer" onclick="toggleAccordion('day1')">
+                        <div class="flex items-center gap-2.5">
+                            <span class="bg-white text-emerald-800 text-xs font-black px-2 py-0.5 rounded">Day 1</span>
+                            <span class="font-bold text-sm sm:text-base">8月8日（土） 関越道 ➔ 水沢うどん ➔ 伊香保石段街 ＆ 岸権旅館チェックイン</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform" id="icon-day1"></i>
+                    </div>
+                    <div id="body-day1" class="p-4 space-y-3 text-xs sm:text-sm bg-white">
+                        <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-xs">
+                            <i class="fa-solid fa-circle-info mr-1 text-amber-600"></i> <strong>お盆初日混雑注意:</strong> 関越道（下り）は高坂SA付近で早朝から混雑します。練馬ICを08:00厳守で出発するのが安心です。
+                        </div>
+
+                        <ul class="relative border-l-2 border-emerald-200 ml-3 space-y-3.5 pl-4 text-xs">
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('nerima_ic')">
+                                <div class="absolute -left-[23px] top-1 bg-indigo-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-car"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">08:00 練馬IC 出発（関越自動車道）</div>
+                                <p class="text-slate-500">渋川伊香保ICを目指し出発。高坂SAまたは上里SAで小休憩。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('shibukawa_ic')">
+                                <div class="absolute -left-[23px] top-1 bg-indigo-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-route"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">09:45 渋川伊香保IC 通過 ➔ 水沢うどん街道へ</div>
+                                <p class="text-slate-500">IC通過後、水沢うどん街道（県道15号）へ。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('mizusawa_udon')">
+                                <div class="absolute -left-[23px] top-1 bg-rose-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-utensils"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">10:30 【昼食】水沢うどん 田丸屋 / 大澤屋</div>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="bg-slate-100 text-slate-600 font-semibold px-1.5 py-0.5 rounded text-[10px]">水沢うどん街道</span>
+                                    <span class="bg-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded text-[10px]"><i class="fa-solid fa-star mr-0.5"></i>日本三大うどん</span>
+                                </div>
+                                <p class="text-slate-500 mt-1">開店（11:00前）に合わせて早め入店。つるつるのコシ強いうどんと揚げたて舞茸天ぷら。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('ikaho_ishidan')">
+                                <div class="absolute -left-[23px] top-1 bg-sky-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-shoe-prints"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">13:00 - 15:30 伊香保石段街 散策 ＆ 河鹿橋</div>
+                                <p class="text-slate-500 mt-1">365段の石段散策。足湯「辰の湯」、温泉まんじゅう発祥「勝月堂」、アツアツの玉こんにゃくを食べ歩き。最上部の伊香保神社・河鹿橋へ。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('kishigon')">
+                                <div class="absolute -left-[23px] top-1 bg-emerald-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-hotel"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">16:00 伊香保温泉 岸権旅館（きしごんりょかん）チェックイン [1泊目]</div>
+                                <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                                    <span class="bg-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded text-[10px]"><i class="fa-solid fa-circle-check mr-0.5"></i>予約済</span>
+                                    <span class="bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded text-[10px]">石段街165段目直結</span>
+                                    <a href="https://www.kishigon.co.jp/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-sky-100 text-sky-800 hover:bg-sky-200 font-bold px-1.5 py-0.5 rounded text-[10px] transition-colors inline-flex items-center gap-0.5"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>公式HP</a>
+                                    <a href="https://www.ikyu.com/00030027/10836945/10228883/branch/?cpb=005&mbln=020,007&midln=10038672,10060453&pbn=0109&rbn=009&rpbn=0003" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-amber-100 text-amber-900 hover:bg-amber-200 font-bold px-1.5 py-0.5 rounded text-[10px] transition-colors inline-flex items-center gap-0.5"><i class="fa-solid fa-circle-info text-[9px]"></i>詳細</a>
+                                </div>
+                                <p class="text-slate-500 mt-1">創業天正年間の老舗宿。濃い茶褐色の「黄金の湯」を源泉100%掛け流しで堪能。夕食は旬の和食会席料理。</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- DAY 2 -->
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="bg-gradient-to-r from-teal-600 to-emerald-700 p-3.5 text-white flex items-center justify-between cursor-pointer" onclick="toggleAccordion('day2')">
+                        <div class="flex items-center gap-2.5">
+                            <span class="bg-white text-teal-800 text-xs font-black px-2 py-0.5 rounded">Day 2</span>
+                            <span class="font-bold text-sm sm:text-base">8月9日（日） 伊香保ロープウェイ ➔ 榛名湖・榛名神社ドライブ ➔ 岸権旅館2泊目</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform" id="icon-day2"></i>
+                    </div>
+                    <div id="body-day2" class="p-4 space-y-3 text-xs sm:text-sm bg-white">
+                        <ul class="relative border-l-2 border-teal-200 ml-3 space-y-3.5 pl-4 text-xs">
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('ikaho_ropeway')">
+                                <div class="absolute -left-[23px] top-1 bg-sky-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-cable-car"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">09:30 伊香保ロープウェイ ➔ 上野原公園（ときめきデッキ）</div>
+                                <p class="text-slate-500">温泉街から空中散歩（約4分）。標高932mの見晴展望台から赤城山や関東平野の大パノラマ。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('harunako')">
+                                <div class="absolute -left-[23px] top-1 bg-emerald-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-compass"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">11:00 榛名湖・メロディライン 涼感ドライブ</div>
+                                <p class="text-slate-500">標高約1,100mの爽やかな湖畔をドライブ。スワンボートや湖畔カフェでゆったり。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('haruna_shrine')">
+                                <div class="absolute -left-[23px] top-1 bg-indigo-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-torii-gate"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">14:00 榛名神社（関東屈指のパワースポット）</div>
+                                <p class="text-slate-500">巨岩や杉木立に囲まれた清流沿いの参道を参拝。願掛け門や双龍門の神聖な空気を感じます。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('kishigon')">
+                                <div class="absolute -left-[23px] top-1 bg-emerald-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-hotel"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">16:30 岸権旅館へ戻り 温泉＆ゆったりディナー [2泊目]</div>
+                                <p class="text-slate-500">連泊ならではの贅沢。早めに宿へ戻り、露天風呂「権左衛門の湯」で旅の疲れを癒やします。</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- DAY 3 -->
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="bg-gradient-to-r from-amber-500 to-teal-700 p-3.5 text-white flex items-center justify-between cursor-pointer" onclick="toggleAccordion('day3')">
+                        <div class="flex items-center gap-2.5">
+                            <span class="bg-white text-amber-800 text-xs font-black px-2 py-0.5 rounded">Day 3</span>
+                            <span class="font-bold text-sm sm:text-base">8月10日（月） たくみの里 ➔ 育風堂 ➔ 14:20四輪バギー体験 ➔ ホテルジュラク</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform" id="icon-day3"></i>
+                    </div>
+                    <div id="body-day3" class="p-4 space-y-3 text-xs sm:text-sm bg-white">
+                        <ul class="relative border-l-2 border-amber-200 ml-3 space-y-3.5 pl-4 text-xs">
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('takumi_no_sato')">
+                                <div class="absolute -left-[23px] top-1 bg-amber-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-wheat-awn"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">10:00 岸権旅館チェックアウト ➔ 道の駅 たくみの里</div>
+                                <p class="text-slate-500">伊香保を出発してみなかみ方面へ。日本の原風景が広がる「たくみの里」で工芸体験や和紙作り散策。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('ikufudo')">
+                                <div class="absolute -left-[23px] top-1 bg-rose-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-utensils"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">12:30 【昼食】育風堂精肉店（IKUFUUDO）</div>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="bg-slate-100 text-slate-600 font-semibold px-1.5 py-0.5 rounded text-[10px]">水上温泉街</span>
+                                    <span class="bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded text-[10px]">超人気行列スポット</span>
+                                </div>
+                                <p class="text-slate-500 mt-1">自家製生ハム「谷川の風」や絶品ローストポーク・カツ丼が名物の大人気精肉レストラン。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('buggy')">
+                                <div class="absolute -left-[23px] top-1 bg-sky-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-motorcycle"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">14:20 【アクティビティ】Buggy-Pal 大自然四輪バギー体験</div>
+                                <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                                    <span class="bg-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded text-[10px]"><i class="fa-solid fa-circle-check mr-0.5"></i>14:20予約済</span>
+                                    <span class="bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded text-[10px]">Buggy-Pal(バギーパル)</span>
+                                    <a href="https://activityjapan.com/publish/plan/6358" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-sky-100 text-sky-800 hover:bg-sky-200 font-bold px-1.5 py-0.5 rounded text-[10px] transition-colors inline-flex items-center gap-0.5"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>詳細</a>
+                                </div>
+                                <p class="text-slate-500 mt-1">みなかみの大自然の中で爽快バギー体験！※動きやすい服装・汚れても良い靴で参加。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('juraku')">
+                                <div class="absolute -left-[23px] top-1 bg-emerald-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-hotel"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">16:15 みなかみホテルジュラク チェックイン [3泊目]</div>
+                                <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                                    <span class="bg-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded text-[10px]"><i class="fa-solid fa-circle-check mr-0.5"></i>予約済</span>
+                                    <span class="bg-sky-100 text-sky-800 font-bold px-1.5 py-0.5 rounded text-[10px]">渓谷露天＆ライブバイキング</span>
+                                    <a href="https://www.hotel-juraku.co.jp/minakami/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-sky-100 text-sky-800 hover:bg-sky-200 font-bold px-1.5 py-0.5 rounded text-[10px] transition-colors inline-flex items-center gap-0.5"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>公式HP</a>
+                                    <a href="https://www.ikyu.com/00030790/11603272/10105999/branch/?cpb=001&mbln=013,017&midln=10047452,10047454&pbn=0011&rbn=032&rpbn=0004" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-amber-100 text-amber-900 hover:bg-amber-200 font-bold px-1.5 py-0.5 rounded text-[10px] transition-colors inline-flex items-center gap-0.5"><i class="fa-solid fa-circle-info text-[9px]"></i>詳細</a>
+                                </div>
+                                <p class="text-slate-500 mt-1">利根川のせせらぎを聴く絶景露天風呂「天狗の湯」「翠渓の湯」。夕食はシェフが目の前で料理を振る舞う大人気ライブキッチンバイキング！</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- DAY 4 -->
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="bg-gradient-to-r from-sky-600 to-indigo-700 p-3.5 text-white flex items-center justify-between cursor-pointer" onclick="toggleAccordion('day4')">
+                        <div class="flex items-center gap-2.5">
+                            <span class="bg-white text-sky-800 text-xs font-black px-2 py-0.5 rounded">Day 4</span>
+                            <span class="font-bold text-sm sm:text-base">8月11日（火・祝） 谷川岳ロープウェイ ➔ 一ノ倉沢 ➔ 土合駅 ➔ ジュラク2泊目</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform" id="icon-day4"></i>
+                    </div>
+                    <div id="body-day4" class="p-4 space-y-3 text-xs sm:text-sm bg-white">
+                        <ul class="relative border-l-2 border-sky-200 ml-3 space-y-3.5 pl-4 text-xs">
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('tanigawadake_ropeway')">
+                                <div class="absolute -left-[23px] top-1 bg-sky-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-cable-car"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">09:00 谷川岳ロープウェイ ➔ 天神平（標高1,300m）</div>
+                                <p class="text-slate-500">土合口駅から約15分の空中散歩。パノラマビュー広がる天神平で爽快な山上の風を満喫。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('ichinokurasawa')">
+                                <div class="absolute -left-[23px] top-1 bg-teal-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-mountain font-bold"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">11:30 一ノ倉沢 絶壁景観スポット</div>
+                                <p class="text-slate-500">日本大岩壁の一つ「一ノ倉沢」の大迫力な岩肌を見上げる感動の絶景スポット。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('doai_station')">
+                                <div class="absolute -left-[23px] top-1 bg-indigo-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-train"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">14:00 JR土合駅（日本一のモグラ駅見学）</div>
+                                <p class="text-slate-500">地下462段の階段を下る幻想的な探検スポット。冷んやりした地底空間を体感。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('juraku')">
+                                <div class="absolute -left-[23px] top-1 bg-emerald-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-hotel"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">16:00 みなかみホテルジュラクへ戻り 温泉＆贅沢バイキング [4泊目]</div>
+                                <p class="text-slate-500">連泊の夜。湯巡りを楽しんだ後は、焼き立てローストビーフや自家製パンのバイキングディナー。</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- DAY 5 -->
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="bg-gradient-to-r from-rose-500 to-pink-600 p-3.5 text-white flex items-center justify-between cursor-pointer" onclick="toggleAccordion('day5')">
+                        <div class="flex items-center gap-2.5">
+                            <span class="bg-white text-rose-800 text-xs font-black px-2 py-0.5 rounded">Day 5</span>
+                            <span class="font-bold text-sm sm:text-base">8月12日（水） 照葉峡ドライブ ➔ 水上駅前ランチ ➔ 関越道帰路</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform" id="icon-day5"></i>
+                    </div>
+                    <div id="body-day5" class="p-4 space-y-3 text-xs sm:text-sm bg-white">
+                        <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-rose-800 text-xs">
+                            <i class="fa-solid fa-triangle-exclamation mr-1 text-rose-600"></i> <strong>お盆Uターン渋滞回避:</strong> 関越道上りは夕方大渋滞が予想されます。水上ICを14:30〜15:00に乗るのがポイントです。
+                        </div>
+
+                        <ul class="relative border-l-2 border-rose-200 ml-3 space-y-3.5 pl-4 text-xs">
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('toriha_kyo')">
+                                <div class="absolute -left-[23px] top-1 bg-emerald-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-tree"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">10:00 ジュラクチェックアウト ➔ 照葉峡・奥利根湖ドライブ</div>
+                                <p class="text-slate-500">関東の奥入瀬と称される「照葉峡」の清流とブナ原生林の深緑ドライブ。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('minakami_station')">
+                                <div class="absolute -left-[23px] top-1 bg-rose-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-utensils"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">12:30 【昼食】水上駅前 舞茸釜飯 / ヤマネコカフェ ＆ お土産購入</div>
+                                <p class="text-slate-500">名物舞茸釜飯や「大とろ牛乳」スイーツ、温泉まんじゅうのお土産散策。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('minakami_ic')">
+                                <div class="absolute -left-[23px] top-1 bg-indigo-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-flag-checkered"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">14:30 水上IC 入口 ➔ 関越自動車道 ➔ 練馬IC（17:00着予定）</div>
+                                <p class="text-slate-500">早めのインター進入で連休最終日の本格Uターン渋滞をスマート回避。</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 2: GOURMET DIRECTORY CONTENT -->
+        <section id="tab-gourmet" class="space-y-4 hidden">
+            <!-- Gourmet Feature Banner -->
+            <div class="relative rounded-2xl overflow-hidden shadow-md border border-slate-200 bg-slate-900 group">
+                <img src="images/minakami_nature.png" alt="みなかみ・谷川岳の絶景とグルメ" class="w-full h-44 sm:h-52 object-cover opacity-85 group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent flex flex-col justify-end p-4 sm:p-5 text-white">
+                    <div class="inline-flex items-center gap-1.5 bg-rose-500/90 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full w-fit mb-1 backdrop-blur-xs">
+                        <i class="fa-solid fa-utensils"></i> 水沢うどん・岸権会席・育風堂・ジュラクバイキング
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold">上州・みなかみ 絶品名物グルメガイド</h3>
+                    <p class="text-xs text-slate-200 mt-0.5">名物水沢うどんから、自家製生ハム・ポークカツ、ジュラクのライブバイキングまで</p>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+                <h2 class="font-bold text-slate-800 text-base sm:text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-utensils text-rose-500"></i>
+                    立ち寄りグルメ＆スポット一覧
+                </h2>
+                <span class="text-xs text-slate-500">タップするとマップ上のピン位置へ移動します</span>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                <th class="p-2.5">日時</th>
+                                <th class="p-2.5">店舗・スポット名</th>
+                                <th class="p-2.5">ジャンル</th>
+                                <th class="p-2.5">エリア</th>
+                                <th class="p-2.5 text-center">特徴・状況</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('mizusawa_udon')">
+                                <td class="p-2.5 font-bold text-emerald-600">Day1 昼</td>
+                                <td class="p-2.5 font-bold text-slate-900">水沢うどん 田丸屋 / 大澤屋</td>
+                                <td class="p-2.5">名物うどん・天ぷら</td>
+                                <td class="p-2.5 text-slate-500">伊香保水沢</td>
+                                <td class="p-2.5 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold text-[10px]">日本三大うどん</span></td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('ikaho_ishidan')">
+                                <td class="p-2.5 font-bold text-emerald-600">Day1 憩</td>
+                                <td class="p-2.5 font-bold text-slate-900">勝月堂 温泉まんじゅう / 玉こんにゃく</td>
+                                <td class="p-2.5">和菓子・食べ歩き</td>
+                                <td class="p-2.5 text-slate-500">伊香保石段街</td>
+                                <td class="p-2.5 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold text-[10px]">発祥の店</span></td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('kishigon')">
+                                <td class="p-2.5 font-bold text-emerald-600">Day1/2 夕</td>
+                                <td class="p-2.5 font-bold text-slate-900">岸権旅館 旬彩和食会席</td>
+                                <td class="p-2.5">和風会席・上州牛</td>
+                                <td class="p-2.5 text-slate-500">伊香保温泉</td>
+                                <td class="p-2.5 text-center flex items-center justify-center gap-1.5 flex-wrap"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold text-[10px]">予約済 (2泊)</span><a href="https://www.kishigon.co.jp/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-sky-100 text-sky-800 hover:bg-sky-200 px-1.5 py-0.5 rounded font-bold text-[10px] inline-flex items-center gap-0.5 transition-colors"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>HP</a><a href="https://www.ikyu.com/00030027/10836945/10228883/branch/?cpb=005&mbln=020,007&midln=10038672,10060453&pbn=0109&rbn=009&rpbn=0003" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-amber-100 text-amber-900 hover:bg-amber-200 px-1.5 py-0.5 rounded font-bold text-[10px] inline-flex items-center gap-0.5 transition-colors"><i class="fa-solid fa-circle-info text-[9px]"></i>詳細</a></td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('takumi_no_sato')">
+                                <td class="p-2.5 font-bold text-amber-600">Day3 朝</td>
+                                <td class="p-2.5 font-bold text-slate-900">道の駅 たくみの里</td>
+                                <td class="p-2.5">工芸体験・里山カフェ</td>
+                                <td class="p-2.5 text-slate-500">みなかみ須川</td>
+                                <td class="p-2.5 text-center"><span class="bg-sky-100 text-sky-700 px-2 py-0.5 rounded font-bold text-[10px]">体験あり</span></td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('ikufudo')">
+                                <td class="p-2.5 font-bold text-amber-600">Day3 昼</td>
+                                <td class="p-2.5 font-bold text-slate-900">育風堂精肉店（IKUFUUDO）</td>
+                                <td class="p-2.5">自家製生ハム・ポークカツ</td>
+                                <td class="p-2.5 text-slate-500">水上温泉街</td>
+                                <td class="p-2.5 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold text-[10px]">行列人気店</span></td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('buggy')">
+                                <td class="p-2.5 font-bold text-amber-600">Day3 14:20</td>
+                                <td class="p-2.5 font-bold text-slate-900">Buggy-Pal 大自然四輪バギー体験</td>
+                                <td class="p-2.5">アクティビティ</td>
+                                <td class="p-2.5 text-slate-500">みなかみ小仁田</td>
+                                <td class="p-2.5 text-center flex items-center justify-center gap-1.5 flex-wrap"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold text-[10px]">14:20予約済</span><a href="https://activityjapan.com/publish/plan/6358" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-sky-100 text-sky-800 hover:bg-sky-200 px-1.5 py-0.5 rounded font-bold text-[10px] inline-flex items-center gap-0.5 transition-colors"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>詳細</a></td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('juraku')">
+                                <td class="p-2.5 font-bold text-sky-600">Day3/4 夕</td>
+                                <td class="p-2.5 font-bold text-slate-900">みなかみホテルジュラク ライブバイキング</td>
+                                <td class="p-2.5">ライブキッチン・和洋中</td>
+                                <td class="p-2.5 text-slate-500">水上温泉</td>
+                                <td class="p-2.5 text-center flex items-center justify-center gap-1.5 flex-wrap"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold text-[10px]">予約済 (2泊)</span><a href="https://www.hotel-juraku.co.jp/minakami/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-sky-100 text-sky-800 hover:bg-sky-200 px-1.5 py-0.5 rounded font-bold text-[10px] inline-flex items-center gap-0.5 transition-colors"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>HP</a><a href="https://www.ikyu.com/00030790/11603272/10105999/branch/?cpb=001&mbln=013,017&midln=10047452,10047454&pbn=0011&rbn=032&rpbn=0004" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-amber-100 text-amber-900 hover:bg-amber-200 px-1.5 py-0.5 rounded font-bold text-[10px] inline-flex items-center gap-0.5 transition-colors"><i class="fa-solid fa-circle-info text-[9px]"></i>詳細</a></td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('tenjindaira')">
+                                <td class="p-2.5 font-bold text-sky-600">Day4 憩</td>
+                                <td class="p-2.5 font-bold text-slate-900">天神平 ビューカフェ</td>
+                                <td class="p-2.5">パノラマカフェ・パフェ</td>
+                                <td class="p-2.5 text-slate-500">谷川岳天神平</td>
+                                <td class="p-2.5 text-center"><span class="bg-sky-100 text-sky-700 px-2 py-0.5 rounded font-bold text-[10px]">標高1300m</span></td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('minakami_station')">
+                                <td class="p-2.5 font-bold text-rose-600">Day5 昼</td>
+                                <td class="p-2.5 font-bold text-slate-900">水上駅前 舞茸釜飯 / 大とろ牛乳</td>
+                                <td class="p-2.5">名物釜飯・スイーツ</td>
+                                <td class="p-2.5 text-slate-500">水上駅前</td>
+                                <td class="p-2.5 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold text-[10px]">名物スイーツ</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: ACCESS & PEAK SEASON TIPS -->
+        <section id="tab-access" class="space-y-4 hidden">
+            <!-- Drive Feature Banner -->
+            <div class="relative rounded-2xl overflow-hidden shadow-md border border-slate-200 bg-slate-900 group">
+                <img src="images/minakami_nature.png" alt="関越自動車道と谷川岳ドライブ" class="w-full h-44 sm:h-52 object-cover opacity-85 group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent flex flex-col justify-end p-4 sm:p-5 text-white">
+                    <div class="inline-flex items-center gap-1.5 bg-emerald-600/90 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full w-fit mb-1 backdrop-blur-xs">
+                        <i class="fa-solid fa-car"></i> 8/8〜8/12 お盆最盛期ドライブナビ
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold">東京 ⇄ 渋川伊香保・水上 アクセス＆渋滞対策</h3>
+                    <p class="text-xs text-slate-200 mt-0.5">練馬ICからの関越道快適アクセス、おすすめサービスエリア（高坂SA・上里SA）＆お盆Uターン渋滞回避テクニック</p>
+                </div>
+            </div>
+
+            <h2 class="font-bold text-slate-800 text-base sm:text-lg flex items-center gap-2 pt-1">
+                <i class="fa-solid fa-route text-amber-500"></i>
+                関越自動車道 ドライブアクセスガイド
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                <!-- Outbound Route -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+                    <div class="font-bold text-emerald-800 flex items-center gap-2 text-sm border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-car-on text-emerald-600"></i>
+                        往路：練馬IC ➔ 渋川伊香保IC（約103km / 08:00出発）
+                    </div>
+                    <p class="text-slate-600">お盆初日（8/8）の関越道下りは朝から激しく混雑します。<strong>08:00前までの練馬IC通過</strong>がポイントです。</p>
+                    <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1">
+                        <div class="font-bold text-slate-800">おすすめサービスエリア休憩:</div>
+                        <ul class="list-disc list-inside text-slate-600 space-y-0.5">
+                            <li><strong>高坂SA (練馬から約30km):</strong> 最初の休憩ポイント。売店・コーヒーが充実。</li>
+                            <li><strong>上里SA (練馬から約75km):</strong> 渋川直前の大SA。上州限定名物スイーツ多数。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Inbound Route -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+                    <div class="font-bold text-emerald-800 flex items-center gap-2 text-sm border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-flag-checkered text-rose-500"></i>
+                        復路：水上IC ➔ 練馬IC（約140km / 14:30〜15:00出発推奨）
+                    </div>
+                    <p class="text-slate-600">お盆最終日（8/12）の関越道上りは高坂SA〜鶴ヶ島JCT付近で30km以上の大渋滞が発生します。</p>
+                    <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1">
+                        <div class="font-bold text-slate-800">Uターン渋滞回避の秘訣:</div>
+                        <ul class="list-disc list-inside text-slate-600 space-y-0.5">
+                            <li><strong>早めインターイン:</strong> 水上ICを14:30〜15:00頃に乗ることで本格的な渋滞ピーク（17:00〜20:00）を回避できます。</li>
+                            <li><strong>赤城高原SA:</strong> 水上IC手前の名物SA。美味しい「飲むヨーグルト」で水分＆糖分補給！</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Peak Season Tips Card -->
+            <div class="bg-gradient-to-br from-amber-50 to-emerald-50 border border-amber-200 rounded-xl p-4 text-xs sm:text-sm space-y-2">
+                <h3 class="font-bold text-amber-900 flex items-center gap-2 text-base">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                    8/8〜8/12 お盆ドライブお役立ちメモ
+                </h3>
+                <ul class="space-y-1.5 text-amber-800 list-disc list-inside">
+                    <li><strong>岸権旅館の駐車場:</strong> 岸権旅館は石段街直結のため、宿専用駐車場へのアクセス経路を事前に確認しておくとスムーズです。</li>
+                    <li><strong>谷川岳の寒さ対策:</strong> 天神平（標高1,300m）は平地より5〜7℃気温が低くなります。薄手のパーカーや長袖シャツをご持参ください。</li>
+                    <li><strong>育風堂精肉店の整理券:</strong> お盆時期のランチタイムは大変混雑するため、12:00前の到着または受付票確保がおすすめです。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- TAB 4: PACKING CHECKLIST -->
+        <section id="tab-checklist" class="space-y-4 hidden">
+            <h2 class="font-bold text-slate-800 text-base sm:text-lg flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-emerald-600"></i>
+                旅の持ち物チェックリスト
+            </h2>
+
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs text-xs sm:text-sm space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="checklist-container">
+                    <label class="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-lg cursor-pointer hover:bg-slate-100 transition">
+                        <input type="checkbox" id="check-1" onchange="saveChecklist()" class="w-4 h-4 text-emerald-600 rounded">
+                        <span>運転免許証 ＆ ETCカード</span>
+                    </label>
+                    <label class="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-lg cursor-pointer hover:bg-slate-100 transition">
+                        <input type="checkbox" id="check-2" onchange="saveChecklist()" class="w-4 h-4 text-emerald-600 rounded">
+                        <span>温泉用タオル・手ぬぐい</span>
+                    </label>
+                    <label class="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-lg cursor-pointer hover:bg-slate-100 transition">
+                        <input type="checkbox" id="check-3" onchange="saveChecklist()" class="w-4 h-4 text-emerald-600 rounded">
+                        <span>歩きやすい靴（石段街・谷川岳用）</span>
+                    </label>
+                    <label class="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-lg cursor-pointer hover:bg-slate-100 transition">
+                        <input type="checkbox" id="check-4" onchange="saveChecklist()" class="w-4 h-4 text-emerald-600 rounded">
+                        <span>上着・羽織もの（山上の寒さ対策）</span>
+                    </label>
+                    <label class="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-lg cursor-pointer hover:bg-slate-100 transition">
+                        <input type="checkbox" id="check-5" onchange="saveChecklist()" class="w-4 h-4 text-emerald-600 rounded">
+                        <span>モバイルバッテリー ＆ 車載充電器</span>
+                    </label>
+                    <label class="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-lg cursor-pointer hover:bg-slate-100 transition">
+                        <input type="checkbox" id="check-6" onchange="saveChecklist()" class="w-4 h-4 text-emerald-600 rounded">
+                        <span>折りたたみ傘・日傘</span>
+                    </label>
+                    <label class="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-lg cursor-pointer hover:bg-slate-100 transition">
+                        <input type="checkbox" id="check-7" onchange="saveChecklist()" class="w-4 h-4 text-emerald-600 rounded">
+                        <span>カメラ・スマホ用自撮り棒</span>
+                    </label>
+                    <label class="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-lg cursor-pointer hover:bg-slate-100 transition">
+                        <input type="checkbox" id="check-8" onchange="saveChecklist()" class="w-4 h-4 text-emerald-600 rounded">
+                        <span>常備薬・酔い止め薬</span>
+                    </label>
+                    <label class="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-lg cursor-pointer hover:bg-slate-100 transition">
+                        <input type="checkbox" id="check-9" onchange="saveChecklist()" class="w-4 h-4 text-emerald-600 rounded">
+                        <span>エコバッグ・お土産用小袋</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTTOM MAP SECTION -->
+        <section id="map-section" class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3 reveal-on-scroll">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
+                <div>
+                    <h2 class="font-bold text-slate-800 text-base sm:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-map-location-dot text-emerald-600"></i>
+                        伊香保・みなかみ インタラクティブマップ
+                    </h2>
+                    <p class="text-xs text-slate-500">ピンタップで詳細ポップアップ表示 / 日程切り替えで移動ルート（点線）を描画</p>
+                </div>
+
+                <!-- Map Day Filter Buttons -->
+                <div class="flex flex-wrap gap-1 bg-slate-100 p-1 rounded-lg text-xs font-medium w-full sm:w-auto">
+                    <button onclick="filterMap('all')" id="btn-map-all" class="map-filter-btn px-2.5 py-1 rounded bg-white text-slate-800 font-bold shadow-xs">全日程</button>
+                    <button onclick="filterMap(1)" id="btn-map-1" class="map-filter-btn px-2.5 py-1 rounded text-slate-600 hover:text-slate-900">Day1</button>
+                    <button onclick="filterMap(2)" id="btn-map-2" class="map-filter-btn px-2.5 py-1 rounded text-slate-600 hover:text-slate-900">Day2</button>
+                    <button onclick="filterMap(3)" id="btn-map-3" class="map-filter-btn px-2.5 py-1 rounded text-slate-600 hover:text-slate-900">Day3</button>
+                    <button onclick="filterMap(4)" id="btn-map-4" class="map-filter-btn px-2.5 py-1 rounded text-slate-600 hover:text-slate-900">Day4</button>
+                    <button onclick="filterMap(5)" id="btn-map-5" class="map-filter-btn px-2.5 py-1 rounded text-slate-600 hover:text-slate-900">Day5</button>
+                </div>
+            </div>
+
+            <!-- Leaflet Container -->
+            <div class="relative w-full h-[380px] sm:h-[450px] overflow-hidden rounded-xl border border-slate-200">
+                <div id="map"></div>
+            </div>
+
+            <!-- Map Legend -->
+            <div class="flex flex-wrap items-center justify-between text-xs text-slate-600 bg-slate-50 p-2 rounded-lg border border-slate-100 gap-2">
+                <div class="font-bold text-slate-700">凡例:</div>
+                <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span> 関越道IC / 起点</div>
+                <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span> 宿泊（岸権・ジュラク）</div>
+                <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> 昼食・夕食</div>
+                <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> カフェ・工芸・おやつ</div>
+                <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-sky-500 inline-block"></span> 景勝地・ロープウェイ</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-800 text-slate-400 text-xs py-4 text-center mt-6">
+        <p>伊香保・みなかみ 旅のしおり 2026 🍁♨️ 8/8 〜 8/12</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. Live Countdown Timer ---
+        function updateCountdown() {
+            const targetDate = new Date('2026-08-08T08:00:00+09:00').getTime();
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            const timerEl = document.getElementById('countdown-timer');
+            if (!timerEl) return;
+
+            if (diff <= 0) {
+                timerEl.innerHTML = "<span class='text-emerald-300 font-bold'>旅行中・出発済み！🍁♨️</span>";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            timerEl.innerHTML = `${days}<span class="text-[11px] font-normal mx-0.5">日</span>${hours.toString().padStart(2, '0')}<span class="text-[11px] font-normal mx-0.5">時間</span>${minutes.toString().padStart(2, '0')}<span class="text-[11px] font-normal mx-0.5">分</span>${seconds.toString().padStart(2, '0')}<span class="text-[11px] font-normal ml-0.5">秒</span>`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- 2. Tab Switcher with Fade-In Effect ---
+        function switchTab(tabName) {
+            ['itinerary', 'gourmet', 'access', 'checklist'].forEach(t => {
+                const el = document.getElementById('tab-' + t);
+                if (el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('animate-fade-in');
+                }
+                const btn = document.getElementById('tab-btn-' + t);
+                if (btn) btn.classList.remove('active');
+            });
+            
+            const targetTab = document.getElementById('tab-' + tabName);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+                targetTab.classList.add('animate-fade-in');
+            }
+            const activeBtn = document.getElementById('tab-btn-' + tabName);
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+
+        // --- 3. Accordion Toggle ---
+        function toggleAccordion(dayId) {
+            const body = document.getElementById('body-' + dayId);
+            const icon = document.getElementById('icon-' + dayId);
+            if (!body) return;
+            if (body.classList.contains('hidden')) {
+                body.classList.remove('hidden');
+                body.classList.add('animate-fade-in');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            } else {
+                body.classList.add('hidden');
+                if (icon) icon.style.transform = 'rotate(-90deg)';
+            }
+        }
+
+        // --- 4. Weather Forecast (Open-Meteo) ---
+        const WEATHER_DAYS = [
+            { day: 1, date: '2026-08-08', label: '8/8(土) [伊香保]' },
+            { day: 2, date: '2026-08-09', label: '8/9(日) [伊香保]' },
+            { day: 3, date: '2026-08-10', label: '8/10(月) [みなかみ]' },
+            { day: 4, date: '2026-08-11', label: '8/11(火・祝) [谷川岳]' },
+            { day: 5, date: '2026-08-12', label: '8/12(水) [水上]' }
+        ];
+
+        const WEATHER_CODE_MAP = {
+            0: { icon: 'fa-sun', label: '快晴' },
+            1: { icon: 'fa-sun', label: '晴れ' },
+            2: { icon: 'fa-cloud-sun', label: '晴れ' },
+            3: { icon: 'fa-cloud', label: '曇り' },
+            45: { icon: 'fa-smog', label: '霧' },
+            48: { icon: 'fa-smog', label: '霧' },
+            51: { icon: 'fa-cloud-rain', label: '霧雨' },
+            61: { icon: 'fa-cloud-rain', label: '雨' },
+            63: { icon: 'fa-cloud-rain', label: '雨' },
+            65: { icon: 'fa-cloud-showers-heavy', label: '強い雨' },
+            80: { icon: 'fa-cloud-rain', label: 'にわか雨' },
+            95: { icon: 'fa-bolt', label: '雷雨' }
+        };
+
+        function showWeatherFallback(day) {
+            const tile = document.getElementById('weather-day-' + day);
+            if (!tile) return;
+            const dayInfo = WEATHER_DAYS.find(d => d.day === day);
+            tile.innerHTML = `<div class="text-[10px] text-emerald-200 font-bold">${dayInfo ? dayInfo.label : ''}</div>
+                <div class="text-lg my-0.5 text-amber-300"><i class="fa-solid fa-sun"></i></div>
+                <div class="text-[10px] text-emerald-100">27°C前後<br>(8月平均)</div>`;
+        }
+
+        async function loadWeatherForecast() {
+            const updatedEl = document.getElementById('weather-updated');
+            try {
+                const url = 'https://api.open-meteo.com/v1/forecast?latitude=36.50&longitude=138.95'
+                    + '&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max'
+                    + '&timezone=Asia%2FTokyo&start_date=2026-08-08&end_date=2026-08-12';
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('forecast request failed');
+                const data = await res.json();
+                const times = (data.daily && data.daily.time) || [];
+
+                WEATHER_DAYS.forEach(({ day, date, label }) => {
+                    const idx = times.indexOf(date);
+                    const tile = document.getElementById('weather-day-' + day);
+                    if (!tile) return;
+
+                    if (idx === -1 || data.daily.temperature_2m_max[idx] == null) {
+                        showWeatherFallback(day);
+                        return;
+                    }
+
+                    const code = data.daily.weathercode[idx];
+                    const info = WEATHER_CODE_MAP[code] || { icon: 'fa-cloud-sun', label: '-' };
+                    const max = Math.round(data.daily.temperature_2m_max[idx]);
+                    const min = Math.round(data.daily.temperature_2m_min[idx]);
+                    const pop = data.daily.precipitation_probability_max[idx];
+
+                    tile.innerHTML = `<div class="text-[10px] text-emerald-200 font-bold">${label}</div>
+                        <div class="text-lg my-0.5 text-amber-300"><i class="fa-solid ${info.icon}"></i></div>
+                        <div class="text-[10px] text-emerald-100">${max}° / ${min}°<br>☔${pop}%</div>`;
+                });
+
+                if (updatedEl) updatedEl.textContent = '最終更新: ' + new Date().toLocaleString('ja-JP');
+            } catch (e) {
+                WEATHER_DAYS.forEach(({ day }) => showWeatherFallback(day));
+                if (updatedEl) updatedEl.textContent = '予報を取得できませんでした（8月平均値を表示中）';
+            }
+        }
+
+        loadWeatherForecast();
+
+        // --- 5. Packing Checklist LocalStorage Persistence ---
+        function saveChecklist() {
+            const state = {};
+            for (let i = 1; i <= 9; i++) {
+                const el = document.getElementById('check-' + i);
+                if (el) state['check-' + i] = el.checked;
+            }
+            localStorage.setItem('ikaho_checklist_2026', JSON.stringify(state));
+        }
+
+        function loadChecklist() {
+            const saved = localStorage.getItem('ikaho_checklist_2026');
+            if (!saved) return;
+            try {
+                const state = JSON.parse(saved);
+                Object.keys(state).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.checked = state[id];
+                });
+            } catch(e) {}
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadChecklist();
+
+            // Scroll Reveal Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+        });
+
+        // --- 6. Map Spots Data with Exact Accurate Coordinates ---
+        const spots = {
+            'nerima_ic': { name: "練馬IC（関越自動車道）", lat: 35.7535, lng: 139.6015, color: "#4f46e5", day: [1], desc: "Day1 08:00 ドライブスタート" },
+            'shibukawa_ic': { name: "渋川伊香保IC", lat: 36.4880, lng: 139.0250, color: "#4f46e5", day: [1], desc: "Day1 09:45 関越道を降りて伊香保へ" },
+            'mizusawa_udon': { name: "水沢うどん 田丸屋 / 大澤屋", lat: 36.4835, lng: 138.9972, color: "#f43f5e", day: [1], desc: "Day1 10:30 昼食 / 日本三大水沢うどん" },
+            'ikaho_ishidan': { name: "伊香保石段街", lat: 36.4981, lng: 138.9925, color: "#0ea5e9", day: [1], desc: "Day1 13:00 散策 / 365段の石段・温泉まんじゅう勝月堂" },
+            'kajikabashi': { name: "河鹿橋", lat: 36.4965, lng: 138.9878, color: "#0ea5e9", day: [1], desc: "Day1 15:30 風情ある赤い太鼓橋" },
+            'kishigon': { name: "伊香保温泉 岸権旅館", lat: 36.4983, lng: 138.9922, color: "#059669", day: [1, 2, 3], desc: "Day1-2 宿泊拠点 / 石段街165段目直結「黄金の湯」", url: "https://www.kishigon.co.jp/", detailUrl: "https://www.ikyu.com/00030027/10836945/10228883/branch/?cpb=005&mbln=020,007&midln=10038672,10060453&pbn=0109&rbn=009&rpbn=0003" },
+            'ikaho_ropeway': { name: "伊香保ロープウェイ", lat: 36.4975, lng: 138.9950, color: "#0ea5e9", day: [2], desc: "Day2 09:30 空中散歩・見晴展望台" },
+            'harunako': { name: "榛名湖", lat: 36.4760, lng: 138.8720, color: "#059669", day: [2], desc: "Day2 11:00 標高1,100m湖畔ドライブ" },
+            'haruna_shrine': { name: "榛名神社", lat: 36.4540, lng: 138.8520, color: "#4f46e5", day: [2], desc: "Day2 14:00 パワースポット参拝" },
+            'takumi_no_sato': { name: "道の駅 たくみの里", lat: 36.7020, lng: 138.8890, color: "#f59e0b", day: [3], desc: "Day3 10:00 里山工芸体験＆散策" },
+            'ikufudo': { name: "育風堂精肉店（IKUFUUDO）", lat: 36.7635, lng: 138.9642, color: "#f43f5e", day: [3], desc: "Day3 12:30 昼食 / 自家製生ハム・ポークカツ" },
+            'buggy': { name: "Buggy-Pal 大自然四輪バギー体験", lat: 36.7550, lng: 138.9680, color: "#0ea5e9", day: [3], desc: "Day3 14:20予約済 / 四輪バギー体験（半日コース）", detailUrl: "https://activityjapan.com/publish/plan/6358" },
+            'suwakyo': { name: "諏訪峡・笹笛橋", lat: 36.7580, lng: 138.9690, color: "#0ea5e9", day: [3], desc: "Day3 16:00 利根川渓谷遊歩道散策" },
+            'juraku': { name: "みなかみホテルジュラク", lat: 36.7685, lng: 138.9660, color: "#059669", day: [3, 4, 5], desc: "Day3-4 宿泊拠点 / 渓谷露天風呂＆ライブバイキング", url: "https://www.hotel-juraku.co.jp/minakami/", detailUrl: "https://www.ikyu.com/00030790/11603272/10105999/branch/?cpb=001&mbln=013,017&midln=10047452,10047454&pbn=0011&rbn=032&rpbn=0004" },
+            'tanigawadake_ropeway': { name: "谷川岳ロープウェイ", lat: 36.8322, lng: 138.9632, color: "#0ea5e9", day: [4], desc: "Day4 09:00 土合口駅 ➔ 天神平へ空中散歩" },
+            'tenjindaira': { name: "天神平 展望台", lat: 36.8350, lng: 138.9480, color: "#f59e0b", day: [4], desc: "Day4 11:00 標高1,300m絶景ビューカフェ" },
+            'ichinokurasawa': { name: "一ノ倉沢", lat: 36.8480, lng: 138.9670, color: "#0ea5e9", day: [4], desc: "Day4 11:30 日本大岩壁の雄大な大自然" },
+            'doai_station': { name: "JR土合駅", lat: 36.8315, lng: 138.9665, color: "#4f46e5", day: [4], desc: "Day4 14:00 地下462段のモグラ駅探検" },
+            'toriha_kyo': { name: "照葉峡", lat: 36.8830, lng: 139.0810, color: "#059669", day: [5], desc: "Day5 10:00 ブナ原生林と清流ドライブ" },
+            'minakami_station': { name: "水上駅前", lat: 36.7725, lng: 138.9685, color: "#f43f5e", day: [5], desc: "Day5 12:30 昼食 / 舞茸釜飯・大とろ牛乳" },
+            'minakami_ic': { name: "水上IC（関越自動車道）", lat: 36.7460, lng: 138.9740, color: "#4f46e5", day: [5], desc: "Day5 14:30 関越道に乗って帰路へ" }
+        };
+
+        // Day Route Sequences for Polyline Drawing
+        const dayRoutes = {
+            1: ['nerima_ic', 'shibukawa_ic', 'mizusawa_udon', 'ikaho_ishidan', 'kajikabashi', 'kishigon'],
+            2: ['kishigon', 'ikaho_ropeway', 'harunako', 'haruna_shrine', 'kishigon'],
+            3: ['kishigon', 'takumi_no_sato', 'ikufudo', 'buggy', 'juraku'],
+            4: ['juraku', 'tanigawadake_ropeway', 'tenjindaira', 'ichinokurasawa', 'doai_station', 'juraku'],
+            5: ['juraku', 'toriha_kyo', 'minakami_station', 'minakami_ic']
+        };
+
+        let map, mapMarkers = {}, routePolyline = null;
+
+        window.onload = function() {
+            // Initialize Leaflet Map centered on Gunma Ikaho & Minakami area
+            map = L.map('map', { scrollWheelZoom: false }).setView([36.63, 138.96], 10);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add Markers
+            Object.keys(spots).forEach(key => {
+                const s = spots[key];
+                
+                // SVG Circle Marker Icon
+                const customIcon = L.divIcon({
+                    className: 'custom-pin',
+                    html: `<div style="background-color: ${s.color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>`,
+                    iconSize: [14, 14],
+                    iconAnchor: [7, 7]
+                });
+
+                const marker = L.marker([s.lat, s.lng], { icon: customIcon }).addTo(map);
+                const urlBtn = s.url ? `<a href="${s.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-bold text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded shadow-xs hover:bg-emerald-700 transition-colors">公式HP <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>` : '';
+                const detailBtn = s.detailUrl ? `<a href="${s.detailUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-bold text-[10px] bg-amber-500 text-slate-900 px-2 py-0.5 rounded shadow-xs hover:bg-amber-600 transition-colors">詳細 <i class="fa-solid fa-circle-info text-[9px]"></i></a>` : '';
+                const btnContainer = (urlBtn || detailBtn) ? `<div class="mt-1.5 flex items-center gap-1.5">${urlBtn}${detailBtn}</div>` : '';
+                marker.bindPopup(`
+                    <div class="custom-popup text-xs">
+                        <strong style="color: ${s.color}; font-size: 13px;">${s.name}</strong>
+                        <p class="text-slate-600 mt-1">${s.desc}</p>
+                        ${btnContainer}
+                    </div>
+                `);
+
+                mapMarkers[key] = marker;
+            });
+        };
+
+        // Filter Map by Day & Draw Animated Flow Route
+        function filterMap(dayNum) {
+            // Update filter button styling
+            document.querySelectorAll('.map-filter-btn').forEach(b => {
+                b.classList.remove('bg-white', 'text-slate-800', 'font-bold', 'shadow-xs');
+                b.classList.add('text-slate-600');
+            });
+
+            const activeBtn = document.getElementById(dayNum === 'all' ? 'btn-map-all' : `btn-map-${dayNum}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'text-slate-800', 'font-bold', 'shadow-xs');
+                activeBtn.classList.remove('text-slate-600');
+            }
+
+            // Clear Polyline
+            if (routePolyline) {
+                map.removeLayer(routePolyline);
+                routePolyline = null;
+            }
+
+            if (dayNum === 'all') {
+                Object.keys(mapMarkers).forEach(k => map.addLayer(mapMarkers[k]));
+                map.setView([36.63, 138.96], 10);
+            } else {
+                // Show only day markers
+                Object.keys(mapMarkers).forEach(k => {
+                    if (spots[k].day.includes(dayNum)) {
+                        map.addLayer(mapMarkers[k]);
+                    } else {
+                        map.removeLayer(mapMarkers[k]);
+                    }
+                });
+
+                // Draw connecting animated route
+                const seqKeys = dayRoutes[dayNum];
+                if (seqKeys) {
+                    const latLngs = seqKeys.map(k => [spots[k].lat, spots[k].lng]);
+                    routePolyline = L.polyline(latLngs, {
+                        color: '#059669',
+                        weight: 3.5,
+                        dashArray: '8, 12',
+                        opacity: 0.85
+                    }).addTo(map);
+
+                    map.fitBounds(routePolyline.getBounds(), { padding: [30, 30] });
+                }
+            }
+        }
+
+        // Scroll down smoothly to bottom map & focus on spot
+        function scrollToMapAndFocus(spotKey) {
+            const spot = spots[spotKey];
+            if (!spot || !map) return;
+
+            // Scroll to map section smoothly
+            const mapSec = document.getElementById('map-section');
+            mapSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Fly to spot & open popup
+            setTimeout(() => {
+                map.flyTo([spot.lat, spot.lng], 13, { duration: 1 });
+                if (mapMarkers[spotKey]) {
+                    mapMarkers[spotKey].openPopup();
+                }
+            }, 300);
+        }
+    </script>
+</body>
+</html>
