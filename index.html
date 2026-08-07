@@ -150,7 +150,7 @@
                     <div class="bg-slate-900/40 backdrop-blur-md border border-white/20 p-3 rounded-xl text-xs space-y-1 shrink-0 shadow-md">
                         <div class="flex items-center justify-between gap-3">
                             <span class="text-emerald-100 font-semibold"><i class="fa-solid fa-car text-sky-300 mr-1"></i>往路 (関越道):</span>
-                            <span class="font-bold">練馬IC 08:00 ➔ 渋川伊香保 09:45</span>
+                            <span class="font-bold">船橋 06:30 ➔ 練馬IC 07:50 ➔ 渋川伊香保 09:30</span>
                         </div>
                         <div class="flex items-center justify-between gap-3">
                             <span class="text-emerald-100 font-semibold"><i class="fa-solid fa-flag-checkered text-rose-300 mr-1"></i>復路 (関越道):</span>
@@ -203,9 +203,14 @@
                 <div class="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-amber-300 text-lg shrink-0">
                     <i class="fa-solid fa-cloud-sun font-bold"></i>
                 </div>
-                <div>
-                    <span class="font-black text-sm sm:text-base">伊香保・みなかみ 旅行当日の天気予報</span>
-                    <p class="text-[11px] text-emerald-100" id="weather-updated">予報を取得中...</p>
+                <div class="flex-1 flex items-center justify-between flex-wrap gap-2">
+                    <div>
+                        <span class="font-black text-sm sm:text-base">伊香保・みなかみ 旅行当日の天気予報</span>
+                        <p class="text-[11px] text-emerald-100" id="weather-updated">予報を取得中...</p>
+                    </div>
+                    <a href="https://tenki.jp/forecast/3/13/4210/10208/" target="_blank" rel="noopener noreferrer" class="text-[10px] bg-white/20 hover:bg-white/35 backdrop-blur-md px-2.5 py-1 rounded-full text-white font-bold transition-colors inline-flex items-center gap-1">
+                        気象庁・tenki.jp詳細 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </a>
                 </div>
             </div>
             <div class="grid grid-cols-5 gap-1.5 sm:gap-2">
@@ -330,18 +335,23 @@
                     </div>
                     <div id="body-day1" class="p-4 space-y-3 text-xs sm:text-sm bg-white">
                         <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-xs">
-                            <i class="fa-solid fa-circle-info mr-1 text-amber-600"></i> <strong>お盆初日混雑注意:</strong> 関越道（下り）は高坂SA付近で早朝から混雑します。練馬ICを08:00厳守で出発するのが安心です。
+                            <i class="fa-solid fa-circle-info mr-1 text-amber-600"></i> <strong>お盆初日混雑注意:</strong> 関越道（下り）は高坂SA付近で早朝から混雑します。自宅（船橋市）を06:30に出発し、07:50〜08:00までの練馬IC通過を目指すのが安心です。
                         </div>
 
                         <ul class="relative border-l-2 border-emerald-200 ml-3 space-y-3.5 pl-4 text-xs">
                             <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('nerima_ic')">
+                                <div class="absolute -left-[23px] top-1 bg-indigo-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-house"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">06:30 自宅（千葉県船橋市）出発 🚘</div>
+                                <p class="text-slate-500">渋滞回避のため早朝06:30に出発。京葉道路・外環道経由で練馬ICへ向かいます（目標: 07:50頃到着）。</p>
+                            </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('nerima_ic')">
                                 <div class="absolute -left-[23px] top-1 bg-indigo-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-car"></i></div>
-                                <div class="font-bold text-slate-800 text-sm">08:00 練馬IC 出発（関越自動車道）</div>
-                                <p class="text-slate-500">渋川伊香保ICを目指し出発。高坂SAまたは上里SAで小休憩。</p>
+                                <div class="font-bold text-slate-800 text-sm">07:50〜08:00 練馬IC 通過（関越自動車道）</div>
+                                <p class="text-slate-500">目標時間通り08:00前に練馬ICを通過し、関越自動車道で渋川伊香保方面へ。高坂SA等で小休憩。</p>
                             </li>
                             <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('shibukawa_ic')">
                                 <div class="absolute -left-[23px] top-1 bg-indigo-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-route"></i></div>
-                                <div class="font-bold text-slate-800 text-sm">09:45 渋川伊香保IC 通過 ➔ 水沢うどん街道へ</div>
+                                <div class="font-bold text-slate-800 text-sm">09:30 渋川伊香保IC 通過 ➔ 水沢うどん街道へ</div>
                                 <p class="text-slate-500">IC通過後、水沢うどん街道（県道15号）へ。</p>
                             </li>
                             <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('mizusawa_udon')">
@@ -389,14 +399,24 @@
                                 <div class="font-bold text-slate-800 text-sm">09:30 伊香保ロープウェイ ➔ 上野原公園（ときめきデッキ）</div>
                                 <p class="text-slate-500">温泉街から空中散歩（約4分）。標高932mの見晴展望台から赤城山や関東平野の大パノラマ。</p>
                             </li>
+                            <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('rocca')">
+                                <div class="absolute -left-[23px] top-1 bg-cyan-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-ice-cream"></i></div>
+                                <div class="font-bold text-slate-800 text-sm">11:00 Rocca（天然氷のかき氷）🍧</div>
+                                <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                                    <span class="bg-cyan-100 text-cyan-800 font-bold px-1.5 py-0.5 rounded text-[10px]">かき氷専門店</span>
+                                    <span class="bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded text-[10px]">超人気行列店</span>
+                                    <a href="https://tabelog.com/gunma/A1004/A100401/10025321/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-sky-100 text-sky-800 hover:bg-sky-200 font-bold px-1.5 py-0.5 rounded text-[10px] transition-colors inline-flex items-center gap-0.5"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>詳細 (食べログ)</a>
+                                </div>
+                                <p class="text-slate-500 mt-1">伊香保近郊で大人気のふわふわ天然氷かき氷！自家製シロップ＆濃厚エスプーマかき氷を堪能。</p>
+                            </li>
                             <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('harunako')">
                                 <div class="absolute -left-[23px] top-1 bg-emerald-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-compass"></i></div>
-                                <div class="font-bold text-slate-800 text-sm">11:00 榛名湖・メロディライン 涼感ドライブ</div>
+                                <div class="font-bold text-slate-800 text-sm">12:30 榛名湖・メロディライン 涼感ドライブ</div>
                                 <p class="text-slate-500">標高約1,100mの爽やかな湖畔をドライブ。スワンボートや湖畔カフェでゆったり。</p>
                             </li>
                             <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('haruna_shrine')">
                                 <div class="absolute -left-[23px] top-1 bg-indigo-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px]"><i class="fa-solid fa-torii-gate"></i></div>
-                                <div class="font-bold text-slate-800 text-sm">14:00 榛名神社（関東屈指のパワースポット）</div>
+                                <div class="font-bold text-slate-800 text-sm">14:30 榛名神社（関東屈指のパワースポット）</div>
                                 <p class="text-slate-500">巨岩や杉木立に囲まれた清流沿いの参道を参拝。願掛け門や双龍門の神聖な空気を感じます。</p>
                             </li>
                             <li class="relative cursor-pointer hover:bg-slate-50 p-1.5 rounded transition" onclick="scrollToMapAndFocus('kishigon')">
@@ -581,6 +601,13 @@
                                 <td class="p-2.5">名物うどん・天ぷら</td>
                                 <td class="p-2.5 text-slate-500">伊香保水沢</td>
                                 <td class="p-2.5 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold text-[10px]">日本三大うどん</span></td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('rocca')">
+                                <td class="p-2.5 font-bold text-emerald-600">Day2 11:00</td>
+                                <td class="p-2.5 font-bold text-slate-900">Rocca（天然氷のかき氷）</td>
+                                <td class="p-2.5">天然氷かき氷・スイーツ</td>
+                                <td class="p-2.5 text-slate-500">渋川金井</td>
+                                <td class="p-2.5 text-center flex items-center justify-center gap-1.5 flex-wrap"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold text-[10px]">行列人気店</span><a href="https://tabelog.com/gunma/A1004/A100401/10025321/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="bg-sky-100 text-sky-800 hover:bg-sky-200 px-1.5 py-0.5 rounded font-bold text-[10px] inline-flex items-center gap-0.5 transition-colors"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>詳細</a></td>
                             </tr>
                             <tr class="hover:bg-emerald-50/50 cursor-pointer transition" onclick="scrollToMapAndFocus('ikaho_ishidan')">
                                 <td class="p-2.5 font-bold text-emerald-600">Day1 憩</td>
@@ -911,10 +938,18 @@
         async function loadWeatherForecast() {
             const updatedEl = document.getElementById('weather-updated');
             try {
+                // Fetch official Japan Meteorological Agency (JMA) model weather forecast via Open-Meteo API
                 const url = 'https://api.open-meteo.com/v1/forecast?latitude=36.50&longitude=138.95'
                     + '&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max'
-                    + '&timezone=Asia%2FTokyo&start_date=2026-08-08&end_date=2026-08-12';
-                const res = await fetch(url);
+                    + '&timezone=Asia%2FTokyo&models=jma&start_date=2026-08-08&end_date=2026-08-12';
+                let res = await fetch(url);
+                if (!res.ok) {
+                    // Fallback to standard model if JMA model query is unavailable
+                    const fallbackUrl = 'https://api.open-meteo.com/v1/forecast?latitude=36.50&longitude=138.95'
+                        + '&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max'
+                        + '&timezone=Asia%2FTokyo&start_date=2026-08-08&end_date=2026-08-12';
+                    res = await fetch(fallbackUrl);
+                }
                 if (!res.ok) throw new Error('forecast request failed');
                 const data = await res.json();
                 const times = (data.daily && data.daily.time) || [];
@@ -940,7 +975,7 @@
                         <div class="text-[10px] text-emerald-100">${max}° / ${min}°<br>☔${pop}%</div>`;
                 });
 
-                if (updatedEl) updatedEl.textContent = '最終更新: ' + new Date().toLocaleString('ja-JP');
+                if (updatedEl) updatedEl.textContent = '気象庁(JMA)モデル 最終更新: ' + new Date().toLocaleString('ja-JP');
             } catch (e) {
                 WEATHER_DAYS.forEach(({ day }) => showWeatherFallback(day));
                 if (updatedEl) updatedEl.textContent = '予報を取得できませんでした（8月平均値を表示中）';
@@ -988,15 +1023,16 @@
 
         // --- 6. Map Spots Data with Exact Accurate Coordinates ---
         const spots = {
-            'nerima_ic': { name: "練馬IC（関越自動車道）", lat: 35.7535, lng: 139.6015, color: "#4f46e5", day: [1], desc: "Day1 08:00 ドライブスタート" },
-            'shibukawa_ic': { name: "渋川伊香保IC", lat: 36.4880, lng: 139.0250, color: "#4f46e5", day: [1], desc: "Day1 09:45 関越道を降りて伊香保へ" },
+            'nerima_ic': { name: "練馬IC（関越自動車道）", lat: 35.7535, lng: 139.6015, color: "#4f46e5", day: [1], desc: "Day1 06:30船橋発 / 07:50練馬IC通過" },
+            'shibukawa_ic': { name: "渋川伊香保IC", lat: 36.4880, lng: 139.0250, color: "#4f46e5", day: [1], desc: "Day1 09:30 関越道を降りて伊香保へ" },
             'mizusawa_udon': { name: "水沢うどん 田丸屋 / 大澤屋", lat: 36.4835, lng: 138.9972, color: "#f43f5e", day: [1], desc: "Day1 10:30 昼食 / 日本三大水沢うどん" },
             'ikaho_ishidan': { name: "伊香保石段街", lat: 36.4981, lng: 138.9925, color: "#0ea5e9", day: [1], desc: "Day1 13:00 散策 / 365段の石段・温泉まんじゅう勝月堂" },
             'kajikabashi': { name: "河鹿橋", lat: 36.4965, lng: 138.9878, color: "#0ea5e9", day: [1], desc: "Day1 15:30 風情ある赤い太鼓橋" },
             'kishigon': { name: "伊香保温泉 岸権旅館", lat: 36.4983, lng: 138.9922, color: "#059669", day: [1, 2, 3], desc: "Day1-2 宿泊拠点 / 石段街165段目直結「黄金の湯」", url: "https://www.kishigon.co.jp/", detailUrl: "https://www.ikyu.com/00030027/10836945/10228883/branch/?cpb=005&mbln=020,007&midln=10038672,10060453&pbn=0109&rbn=009&rpbn=0003" },
             'ikaho_ropeway': { name: "伊香保ロープウェイ", lat: 36.4975, lng: 138.9950, color: "#0ea5e9", day: [2], desc: "Day2 09:30 空中散歩・見晴展望台" },
-            'harunako': { name: "榛名湖", lat: 36.4760, lng: 138.8720, color: "#059669", day: [2], desc: "Day2 11:00 標高1,100m湖畔ドライブ" },
-            'haruna_shrine': { name: "榛名神社", lat: 36.4540, lng: 138.8520, color: "#4f46e5", day: [2], desc: "Day2 14:00 パワースポット参拝" },
+            'rocca': { name: "Rocca（天然氷のかき氷）", lat: 36.5048, lng: 138.9952, color: "#06b6d4", day: [2], desc: "Day2 11:00 行列必至の天然氷かき氷専門店", url: "https://tabelog.com/gunma/A1004/A100401/10025321/" },
+            'harunako': { name: "榛名湖", lat: 36.4760, lng: 138.8720, color: "#059669", day: [2], desc: "Day2 12:30 標高1,100m湖畔ドライブ" },
+            'haruna_shrine': { name: "榛名神社", lat: 36.4540, lng: 138.8520, color: "#4f46e5", day: [2], desc: "Day2 14:30 パワースポット参拝" },
             'takumi_no_sato': { name: "道の駅 たくみの里", lat: 36.7020, lng: 138.8890, color: "#f59e0b", day: [3], desc: "Day3 10:00 里山工芸体験＆散策" },
             'ikufudo': { name: "育風堂精肉店（IKUFUUDO）", lat: 36.7635, lng: 138.9642, color: "#f43f5e", day: [3], desc: "Day3 12:30 昼食 / 自家製生ハム・ポークカツ" },
             'buggy': { name: "Buggy-Pal 大自然四輪バギー体験", lat: 36.7550, lng: 138.9680, color: "#0ea5e9", day: [3], desc: "Day3 14:20予約済 / 四輪バギー体験（半日コース）", detailUrl: "https://activityjapan.com/publish/plan/6358" },
@@ -1015,7 +1051,7 @@
         // Day Route Sequences for Polyline Drawing
         const dayRoutes = {
             1: ['nerima_ic', 'shibukawa_ic', 'mizusawa_udon', 'ikaho_ishidan', 'kajikabashi', 'kishigon'],
-            2: ['kishigon', 'ikaho_ropeway', 'harunako', 'haruna_shrine', 'kishigon'],
+            2: ['kishigon', 'ikaho_ropeway', 'rocca', 'harunako', 'haruna_shrine', 'kishigon'],
             3: ['kishigon', 'takumi_no_sato', 'ikufudo', 'buggy', 'juraku'],
             4: ['juraku', 'bluemoonhill', 'tanigawadake_ropeway', 'tenjindaira', 'ichinokurasawa', 'doai_station', 'juraku'],
             5: ['juraku', 'toriha_kyo', 'minakami_station', 'minakami_ic']
